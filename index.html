@@ -432,6 +432,17 @@
             border: none;
         }
         
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(10px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+        
         .inspiration-text {
             position: fixed;
             bottom: 30px;
@@ -662,7 +673,41 @@
                                               style="font-size: 0.9em;"></textarea>
                                 </div>
                                 
-                                <button class="cta-button" onclick="analyzeValues()" 
+                                <button class="cta-button" 
+                                        onclick="(function(){
+                                            const feeling = document.getElementById('feelingInput').value;
+                                            const why = document.getElementById('whyInput').value;
+                                            const vision = document.getElementById('visionInput').value;
+                                            
+                                            if (!feeling || !why || !vision) {
+                                                alert('请回答所有问题，这能帮助我们发现你的价值观');
+                                                return;
+                                            }
+                                            
+                                            // 简单的价值观分析
+                                            const allText = (feeling + ' ' + why + ' ' + vision).toLowerCase();
+                                            const values = [];
+                                            
+                                            if (allText.includes('自由') || allText.includes('独立')) values.push('自由');
+                                            if (allText.includes('安全') || allText.includes('稳定')) values.push('安全');
+                                            if (allText.includes('成长') || allText.includes('进步')) values.push('成长');
+                                            if (allText.includes('连接') || allText.includes('陪伴')) values.push('连接');
+                                            if (allText.includes('创造') || allText.includes('创新')) values.push('创造');
+                                            
+                                            // 显示建议
+                                            const container = document.getElementById('simpleValueGuide');
+                                            if (container) {
+                                                container.style.display = 'block';
+                                                container.scrollIntoView({ behavior: 'smooth' });
+                                            }
+                                            
+                                            // 显示分析结果
+                                            const insight = document.getElementById('valueInsight');
+                                            if (insight && values.length > 0) {
+                                                insight.style.display = 'block';
+                                                insight.innerHTML = '✨ 基于你的回答，你可能重视：<strong>' + values.join('、') + '</strong>';
+                                            }
+                                        })()" 
                                         style="background: linear-gradient(45deg, #007AFF, #5856D6); margin-top: 15px; padding: 10px 20px; font-size: 0.9em;">
                                     🔍 分析我的价值观
                                 </button>
@@ -811,9 +856,12 @@
             testResults.optionB = optionB;
             testResults.choiceDescription = choiceText;
             
-            // 更新测试界面
-            document.getElementById('optionAText').textContent = optionA;
-            document.getElementById('optionBText').textContent = optionB;
+            // 更新测试界面 - 修复这里的错误
+            const optionAText = document.getElementById('optionAText');
+            const optionBText = document.getElementById('optionBText');
+            
+            if (optionAText) optionAText.textContent = optionA;
+            if (optionBText) optionBText.textContent = optionB;
             
             // 显示测试选项
             const testOptions = document.getElementById('testOptions');
@@ -823,7 +871,7 @@
             if (testInstructions) testInstructions.classList.remove('hidden');
             
             // 滚动到测试区域
-            testOptions.scrollIntoView({ behavior: 'smooth' });
+            if (testOptions) testOptions.scrollIntoView({ behavior: 'smooth' });
         }
 
         function startOptionTest(option) {
@@ -1012,6 +1060,11 @@
                     return;
                 }
                 
+                // 获取三个问题的答案
+                const feeling = document.getElementById('feelingInput').value || '';
+                const why = document.getElementById('whyInput').value || '';
+                const vision = document.getElementById('visionInput').value || '';
+                
                 const decision = {
                     id: Date.now(),
                     date: new Date().toISOString(),
@@ -1022,7 +1075,13 @@
                     bodyFeedbackB: testResults.bodyFeedbackB,
                     recommendation: testResults.recommendation,
                     importance: currentImportance,
-                    values: [...selectedValues]
+                    values: [...selectedValues],
+                    // 新增：保存三个问题的答案
+                    valueExploration: {
+                        feeling: feeling,
+                        why: why,
+                        vision: vision
+                    }
                 };
                 
                 // 保存到localStorage
