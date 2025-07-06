@@ -642,6 +642,59 @@
             <small style="opacity: 0.7;">— Steve Jobs</small>
         </div>
         
+        <!-- 新增：适用性说明 -->
+        <div style="max-width: 800px; margin: 30px auto; padding: 25px; background: rgba(255,255,255,0.08); border-radius: 15px; border: 1px solid rgba(255,255,255,0.2);">
+            <h3 style="color: #007AFF; margin-bottom: 15px; font-size: 1.3em;">🎯 这个工具适合你吗？</h3>
+            
+            <!-- 时效性分类 -->
+            <div style="margin-bottom: 25px;">
+                <h4 style="color: #FFD700; margin-bottom: 15px; font-size: 1.1em;">⏰ 根据决策时间范围选择</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px;">
+                    <div style="background: rgba(16,185,129,0.2); padding: 15px; border-radius: 10px; border-left: 4px solid #10B981;">
+                        <h5 style="color: #10B981; margin-bottom: 8px;">🎯 当下选择（0-7天）</h5>
+                        <p style="color: #b0b0b0; font-size: 0.9em; line-height: 1.5;">身体智慧最准确</p>
+                        <small style="color: #888; font-size: 0.8em;">例如：今天做什么、这周去哪里、接受哪个邀请</small>
+                    </div>
+                    <div style="background: rgba(245,158,11,0.2); padding: 15px; border-radius: 10px; border-left: 4px solid #F59E0B;">
+                        <h5 style="color: #F59E0B; margin-bottom: 8px;">🤔 近期决策（1-3个月）</h5>
+                        <p style="color: #b0b0b0; font-size: 0.9em; line-height: 1.5;">身体+理性结合</p>
+                        <small style="color: #888; font-size: 0.8em;">例如：换工作、搬家、开始一段关系</small>
+                    </div>
+                    <div style="background: rgba(239,68,68,0.2); padding: 15px; border-radius: 10px; border-left: 4px solid #EF4444;">
+                        <h5 style="color: #EF4444; margin-bottom: 8px;">📊 长远规划（1年以上）</h5>
+                        <p style="color: #b0b0b0; font-size: 0.9em; line-height: 1.5;">需要更多分析工具</p>
+                        <small style="color: #888; font-size: 0.8em;">例如：职业规划、投资理财、人生目标</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                <div>
+                    <h4 style="color: #10B981; margin-bottom: 10px; font-size: 1.1em;">✅ 最适合的情况：</h4>
+                    <ul style="color: #b0b0b0; font-size: 0.9em; line-height: 1.6; padding-left: 20px;">
+                        <li>内心有冲突的选择</li>
+                        <li>逻辑分析后仍犹豫不决</li>
+                        <li>需要了解真实感受</li>
+                        <li>价值观相关的决策</li>
+                        <li>人际关系相关选择</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color: #EF4444; margin-bottom: 10px; font-size: 1.1em;">❌ 不适合的情况：</h4>
+                    <ul style="color: #b0b0b0; font-size: 0.9em; line-height: 1.6; padding-left: 20px;">
+                        <li>紧急危机处理</li>
+                        <li>纯数据驱动的选择</li>
+                        <li>法律或医疗相关决定</li>
+                        <li>需要专业知识的判断</li>
+                        <li>复杂的长期战略规划</li>
+                    </ul>
+                </div>
+            </div>
+            <p style="text-align: center; color: #888; font-size: 0.85em; font-style: italic;">
+                💡 身体智慧在当下最准确，越往长远越需要结合理性分析
+            </p>
+        </div>
+        
         <button class="cta-button" onclick="startJourney()">🚀 开始你的直觉之旅</button>
         <button class="cta-button" onclick="scrollToMap()" style="background: transparent; border: 2px solid #007AFF;">📍 查看身体智慧地图</button>
     </section>
@@ -1090,19 +1143,35 @@
             
             <div id="testInstructions" class="hidden" style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 15px;">
                 <h4 style="margin-bottom: 15px;">🎯 测试方法：</h4>
-                <p style="line-height: 1.6; color: #b0b0b0;">
+                <p style="line-height: 1.6; color: #b0b0b0; margin-bottom: 15px;">
                     1. 点击一个选项，闭上眼睛<br>
                     2. 深呼吸，想象选择这个选项<br>
                     3. 感受你的身体反应 30 秒<br>
                     4. 注意：能量上升 vs 下降？扩张 vs 收缩？<br>
                     5. 测试另一个选项，对比感受
                 </p>
+                
+                <!-- 新增：使用提醒 -->
+                <div style="background: rgba(255,193,7,0.1); padding: 15px; border-radius: 10px; border-left: 4px solid #F59E0B;">
+                    <h5 style="color: #F59E0B; margin-bottom: 10px;">💡 最佳使用条件</h5>
+                    <p style="font-size: 0.9em; color: #b0b0b0; line-height: 1.5;">
+                        • <strong>决策时效</strong>：0-7天内的选择效果最佳<br>
+                        • <strong>心理状态</strong>：心情平静、不急躁时使用<br>
+                        • <strong>环境条件</strong>：安静空间，避免干扰<br>
+                        • <strong>时间安排</strong>：预留15-20分钟完整体验<br>
+                        • <strong>开放心态</strong>：相信身体的智慧，不预设答案
+                    </p>
+                </div>
             </div>
         </div>
     </section>
 
     <div class="inspiration-text">
         "Stay hungry. Stay foolish. Follow your body wisdom." — 重新定义你的人生
+        <br>
+        <small style="opacity: 0.6; font-size: 0.8em; margin-top: 5px; display: block;">
+            ⚖️ 仅供自我探索参考 · 身体智慧在当下最准确 · 长远规划需结合理性分析
+        </small>
     </div>
 
     <script>
