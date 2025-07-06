@@ -112,6 +112,150 @@
             position: relative;
         }
         
+        .body-diagram {
+            max-width: 600px;
+            margin: 40px auto;
+            position: relative;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 40px;
+        }
+        
+        .human-figure {
+            width: 180px;
+            height: 360px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        /* 头部 */
+        .human-head {
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* 身体 */
+        .human-body {
+            width: 100px;
+            height: 140px;
+            background: rgba(255,255,255,0.08);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 20px 20px 10px 10px;
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* 手臂 */
+        .human-arm-left, .human-arm-right {
+            width: 25px;
+            height: 100px;
+            background: rgba(255,255,255,0.06);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 15px;
+            position: absolute;
+            top: 80px;
+        }
+        
+        .human-arm-left {
+            left: 15px;
+            transform: rotate(-15deg);
+        }
+        
+        .human-arm-right {
+            right: 15px;
+            transform: rotate(15deg);
+        }
+        
+        /* 腿部 */
+        .human-legs {
+            width: 80px;
+            height: 130px;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .human-leg-left, .human-leg-right {
+            width: 30px;
+            height: 130px;
+            background: rgba(255,255,255,0.06);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 15px;
+            position: absolute;
+            bottom: 0;
+        }
+        
+        .human-leg-left {
+            left: 5px;
+        }
+        
+        .human-leg-right {
+            right: 5px;
+        }
+        
+        .body-part {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0,122,255,0.3);
+            border: 2px solid #007AFF;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            transition: all 0.3s ease;
+        }
+        
+        .body-part:hover {
+            transform: scale(1.2);
+            background: rgba(0,122,255,0.5);
+            box-shadow: 0 0 20px rgba(0,122,255,0.8);
+        }
+        
+        .body-part.active {
+            animation: pulse 2s ease-in-out infinite;
+            background: rgba(0,122,255,0.6);
+        }
+        
+        .part-label {
+            position: absolute;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+        
+        .body-part:hover .part-label {
+            opacity: 1;
+        }
+        
+        /* 身体部位位置 */
+        .part-head { top: 20px; left: 50%; transform: translateX(-50%); }
+        .part-chest { top: 100px; left: 50%; transform: translateX(-50%); }
+        .part-belly { top: 180px; left: 50%; transform: translateX(-50%); }
+        .part-pelvis { top: 250px; left: 50%; transform: translateX(-50%); }
+        .part-leftarm { top: 120px; left: 20px; }
+        .part-rightarm { top: 120px; right: 20px; }
+        .part-legs { bottom: 40px; left: 50%; transform: translateX(-50%); }
+        
         .map-title {
             font-size: 2.5em;
             font-weight: 300;
@@ -443,6 +587,29 @@
             }
         }
         
+        .reaction-btn {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            min-width: 120px;
+        }
+        
+        .reaction-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+        
+        .reaction-btn.selected {
+            background: #007AFF;
+            border-color: #007AFF;
+            transform: scale(1.05);
+        }
+        
         .inspiration-text {
             position: fixed;
             bottom: 30px;
@@ -475,6 +642,59 @@
             <small style="opacity: 0.7;">— Steve Jobs</small>
         </div>
         
+        <!-- 新增：适用性说明 -->
+        <div style="max-width: 800px; margin: 30px auto; padding: 25px; background: rgba(255,255,255,0.08); border-radius: 15px; border: 1px solid rgba(255,255,255,0.2);">
+            <h3 style="color: #007AFF; margin-bottom: 15px; font-size: 1.3em;">🎯 这个工具适合你吗？</h3>
+            
+            <!-- 时效性分类 -->
+            <div style="margin-bottom: 25px;">
+                <h4 style="color: #FFD700; margin-bottom: 15px; font-size: 1.1em;">⏰ 根据决策时间范围选择</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px;">
+                    <div style="background: rgba(16,185,129,0.2); padding: 15px; border-radius: 10px; border-left: 4px solid #10B981;">
+                        <h5 style="color: #10B981; margin-bottom: 8px;">🎯 当下选择（0-7天）</h5>
+                        <p style="color: #b0b0b0; font-size: 0.9em; line-height: 1.5;">身体智慧最准确</p>
+                        <small style="color: #888; font-size: 0.8em;">例如：今天做什么、这周去哪里、接受哪个邀请</small>
+                    </div>
+                    <div style="background: rgba(245,158,11,0.2); padding: 15px; border-radius: 10px; border-left: 4px solid #F59E0B;">
+                        <h5 style="color: #F59E0B; margin-bottom: 8px;">🤔 近期决策（1-3个月）</h5>
+                        <p style="color: #b0b0b0; font-size: 0.9em; line-height: 1.5;">身体+理性结合</p>
+                        <small style="color: #888; font-size: 0.8em;">例如：换工作、搬家、开始一段关系</small>
+                    </div>
+                    <div style="background: rgba(239,68,68,0.2); padding: 15px; border-radius: 10px; border-left: 4px solid #EF4444;">
+                        <h5 style="color: #EF4444; margin-bottom: 8px;">📊 长远规划（1年以上）</h5>
+                        <p style="color: #b0b0b0; font-size: 0.9em; line-height: 1.5;">需要更多分析工具</p>
+                        <small style="color: #888; font-size: 0.8em;">例如：职业规划、投资理财、人生目标</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                <div>
+                    <h4 style="color: #10B981; margin-bottom: 10px; font-size: 1.1em;">✅ 最适合的情况：</h4>
+                    <ul style="color: #b0b0b0; font-size: 0.9em; line-height: 1.6; padding-left: 20px;">
+                        <li>内心有冲突的选择</li>
+                        <li>逻辑分析后仍犹豫不决</li>
+                        <li>需要了解真实感受</li>
+                        <li>价值观相关的决策</li>
+                        <li>人际关系相关选择</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color: #EF4444; margin-bottom: 10px; font-size: 1.1em;">❌ 不适合的情况：</h4>
+                    <ul style="color: #b0b0b0; font-size: 0.9em; line-height: 1.6; padding-left: 20px;">
+                        <li>紧急危机处理</li>
+                        <li>纯数据驱动的选择</li>
+                        <li>法律或医疗相关决定</li>
+                        <li>需要专业知识的判断</li>
+                        <li>复杂的长期战略规划</li>
+                    </ul>
+                </div>
+            </div>
+            <p style="text-align: center; color: #888; font-size: 0.85em; font-style: italic;">
+                💡 身体智慧在当下最准确，越往长远越需要结合理性分析
+            </p>
+        </div>
+        
         <button class="cta-button" onclick="startJourney()">🚀 开始你的直觉之旅</button>
         <button class="cta-button" onclick="scrollToMap()" style="background: transparent; border: 2px solid #007AFF;">📍 查看身体智慧地图</button>
     </section>
@@ -486,6 +706,56 @@
             <p style="text-align: center; font-size: 1.1em; margin-bottom: 40px; color: #b0b0b0;">
                 每一个身体感觉都是人生路径上的重要坐标
             </p>
+            
+            <!-- 新增：人体图示 -->
+            <div class="body-diagram">
+                <h3 style="text-align: center; color: #007AFF; margin-bottom: 30px;">点击身体部位，了解可能的信号含义</h3>
+                <div class="human-figure">
+                    <!-- 人形结构 -->
+                    <div class="human-head"></div>
+                    <div class="human-body"></div>
+                    <div class="human-arm-left"></div>
+                    <div class="human-arm-right"></div>
+                    <div class="human-legs">
+                        <div class="human-leg-left"></div>
+                        <div class="human-leg-right"></div>
+                    </div>
+                    
+                    <!-- 可点击的部位 -->
+                    <div class="body-part part-head" onclick="showBodyPartInfo('head')">
+                        🧠
+                        <div class="part-label" style="top: -40px; left: 50%; transform: translateX(-50%);">头部：思维与清晰度</div>
+                    </div>
+                    <div class="body-part part-chest" onclick="showBodyPartInfo('chest')">
+                        💓
+                        <div class="part-label" style="left: 60px;">胸口：情感与心之所向</div>
+                    </div>
+                    <div class="body-part part-belly" onclick="showBodyPartInfo('belly')">
+                        🌀
+                        <div class="part-label" style="left: 60px;">小腹：直觉中心</div>
+                    </div>
+                    <div class="body-part part-pelvis" onclick="showBodyPartInfo('pelvis')">
+                        🔥
+                        <div class="part-label" style="left: 60px;">骨盆：创造力源泉</div>
+                    </div>
+                    <div class="body-part part-leftarm" onclick="showBodyPartInfo('arms')">
+                        ⚡
+                        <div class="part-label" style="left: 50px;">手臂：行动意愿</div>
+                    </div>
+                    <div class="body-part part-rightarm" onclick="showBodyPartInfo('arms')">
+                        ⚡
+                        <div class="part-label" style="right: 50px;">手臂：行动意愿</div>
+                    </div>
+                    <div class="body-part part-legs" onclick="showBodyPartInfo('legs')">
+                        🚀
+                        <div class="part-label" style="bottom: -40px; left: 50%; transform: translateX(-50%);">腿部：前进动力</div>
+                    </div>
+                </div>
+                
+                <div id="bodyPartDetail" style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 10px; display: none;">
+                    <!-- 详细信息会显示在这里 -->
+                </div>
+            </div>
             
             <div class="body-zones">
                 <div class="zone-card" onclick="activateZone(this, 'head')">
@@ -591,11 +861,75 @@
                     <div class="jobs-quote" style="font-size: 0.9em;">
                         "闭上眼睛，深呼吸。想象你选择了这个选项，你的人生将如何展开？感受你的身体此刻在告诉你什么..."
                     </div>
-                    <textarea 
-                        class="choice-input" 
-                        id="bodyFeedbackA"
-                        placeholder="描述你的身体感受...&#10;例如：胸口发紧/温暖、小腹震动、手臂发麻、腿部沉重、头脑清晰/混乱、整体能量上升/下降..."
-                        rows="4"></textarea>
+                    
+                    <!-- 结构化身体反应记录 -->
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin: 20px 0;">
+                        <h4 style="color: #FFD700; margin-bottom: 20px;">记录你的身体反应</h4>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <p style="margin-bottom: 10px;">能量方向：</p>
+                            <div style="display: flex; gap: 20px; justify-content: center;">
+                                <label style="cursor: pointer;">
+                                    <input type="radio" name="energyA" value="up" style="margin-right: 5px;">
+                                    ⬆️ 上升
+                                </label>
+                                <label style="cursor: pointer;">
+                                    <input type="radio" name="energyA" value="down" style="margin-right: 5px;">
+                                    ⬇️ 下降
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <p style="margin-bottom: 10px;">身体状态：</p>
+                            <div style="display: flex; gap: 20px; justify-content: center;">
+                                <label style="cursor: pointer;">
+                                    <input type="radio" name="bodyA" value="expand" style="margin-right: 5px;">
+                                    🟢 扩张
+                                </label>
+                                <label style="cursor: pointer;">
+                                    <input type="radio" name="bodyA" value="contract" style="margin-right: 5px;">
+                                    🔴 收缩
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <p style="margin-bottom: 10px;">呼吸感受：</p>
+                            <div style="display: flex; gap: 20px; justify-content: center;">
+                                <label style="cursor: pointer;">
+                                    <input type="radio" name="breathA" value="smooth" style="margin-right: 5px;">
+                                    😌 顺畅
+                                </label>
+                                <label style="cursor: pointer;">
+                                    <input type="radio" name="breathA" value="blocked" style="margin-right: 5px;">
+                                    😤 阻塞
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <p style="margin-bottom: 10px;">整体感觉：</p>
+                            <div style="display: flex; gap: 20px; justify-content: center;">
+                                <label style="cursor: pointer;">
+                                    <input type="radio" name="overallA" value="light" style="margin-right: 5px;">
+                                    ✨ 轻盈
+                                </label>
+                                <label style="cursor: pointer;">
+                                    <input type="radio" name="overallA" value="heavy" style="margin-right: 5px;">
+                                    🪨 沉重
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <textarea 
+                            class="choice-input" 
+                            id="bodyFeedbackA"
+                            placeholder="补充其他身体感受（可选）"
+                            rows="2"
+                            style="font-size: 0.9em;"></textarea>
+                    </div>
+                    
                     <button class="cta-button" onclick="completeOptionTest('A')" style="width: 100%;">
                         ✅ 完成选项A测试
                     </button>
@@ -610,11 +944,75 @@
                     <div class="jobs-quote" style="font-size: 0.9em;">
                         "再次深呼吸，清空之前的感受。现在想象你选择了这个选项，让身体告诉你真实的反应..."
                     </div>
-                    <textarea 
-                        class="choice-input" 
-                        id="bodyFeedbackB"
-                        placeholder="描述你的身体感受...&#10;胸口、小腹、手臂、腿部、头部...任何你注意到的感觉都很重要"
-                        rows="4"></textarea>
+                    
+                    <!-- 结构化身体反应记录 -->
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin: 20px 0;">
+                        <h4 style="color: #FFD700; margin-bottom: 20px;">记录你的身体反应</h4>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <p style="margin-bottom: 10px;">能量方向：</p>
+                            <div style="display: flex; gap: 20px; justify-content: center;">
+                                <label style="cursor: pointer;">
+                                    <input type="radio" name="energyB" value="up" style="margin-right: 5px;">
+                                    ⬆️ 上升
+                                </label>
+                                <label style="cursor: pointer;">
+                                    <input type="radio" name="energyB" value="down" style="margin-right: 5px;">
+                                    ⬇️ 下降
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <p style="margin-bottom: 10px;">身体状态：</p>
+                            <div style="display: flex; gap: 20px; justify-content: center;">
+                                <label style="cursor: pointer;">
+                                    <input type="radio" name="bodyB" value="expand" style="margin-right: 5px;">
+                                    🟢 扩张
+                                </label>
+                                <label style="cursor: pointer;">
+                                    <input type="radio" name="bodyB" value="contract" style="margin-right: 5px;">
+                                    🔴 收缩
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <p style="margin-bottom: 10px;">呼吸感受：</p>
+                            <div style="display: flex; gap: 20px; justify-content: center;">
+                                <label style="cursor: pointer;">
+                                    <input type="radio" name="breathB" value="smooth" style="margin-right: 5px;">
+                                    😌 顺畅
+                                </label>
+                                <label style="cursor: pointer;">
+                                    <input type="radio" name="breathB" value="blocked" style="margin-right: 5px;">
+                                    😤 阻塞
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <p style="margin-bottom: 10px;">整体感觉：</p>
+                            <div style="display: flex; gap: 20px; justify-content: center;">
+                                <label style="cursor: pointer;">
+                                    <input type="radio" name="overallB" value="light" style="margin-right: 5px;">
+                                    ✨ 轻盈
+                                </label>
+                                <label style="cursor: pointer;">
+                                    <input type="radio" name="overallB" value="heavy" style="margin-right: 5px;">
+                                    🪨 沉重
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <textarea 
+                            class="choice-input" 
+                            id="bodyFeedbackB"
+                            placeholder="补充其他身体感受（可选）"
+                            rows="2"
+                            style="font-size: 0.9em;"></textarea>
+                    </div>
+                    
                     <button class="cta-button" onclick="completeOptionTest('B')" style="width: 100%;">
                         ✅ 完成选项B测试
                     </button>
@@ -674,50 +1072,14 @@
                                 </div>
                                 
                                 <button class="cta-button" 
-                                        onclick="(function(){
-                                            const feeling = document.getElementById('feelingInput').value;
-                                            const why = document.getElementById('whyInput').value;
-                                            const vision = document.getElementById('visionInput').value;
-                                            
-                                            if (!feeling || !why || !vision) {
-                                                alert('请回答所有问题，这能帮助我们发现你的价值观');
-                                                return;
-                                            }
-                                            
-                                            // 简单的价值观分析
-                                            const allText = (feeling + ' ' + why + ' ' + vision).toLowerCase();
-                                            const values = [];
-                                            
-                                            if (allText.includes('自由') || allText.includes('独立')) values.push('自由');
-                                            if (allText.includes('安全') || allText.includes('稳定')) values.push('安全');
-                                            if (allText.includes('成长') || allText.includes('进步')) values.push('成长');
-                                            if (allText.includes('连接') || allText.includes('陪伴')) values.push('连接');
-                                            if (allText.includes('创造') || allText.includes('创新')) values.push('创造');
-                                            
-                                            // 显示建议
-                                            const container = document.getElementById('simpleValueGuide');
-                                            if (container) {
-                                                container.style.display = 'block';
-                                                container.scrollIntoView({ behavior: 'smooth' });
-                                            }
-                                            
-                                            // 显示分析结果
-                                            const insight = document.getElementById('valueInsight');
-                                            if (insight && values.length > 0) {
-                                                insight.style.display = 'block';
-                                                insight.innerHTML = '✨ 基于你的回答，你可能重视：<strong>' + values.join('、') + '</strong>';
-                                            }
-                                        })()" 
+                                        onclick="analyzeValueInsight()" 
                                         style="background: linear-gradient(45deg, #007AFF, #5856D6); margin-top: 15px; padding: 10px 20px; font-size: 0.9em;">
                                     🔍 分析我的价值观
                                 </button>
                             </div>
                             
-                            <div id="suggestedValues" class="hidden" style="margin-bottom: 15px;">
-                                <p style="color: #b0b0b0; margin-bottom: 10px;">✨ AI发现的价值观：</p>
-                                <div id="aiValueSuggestions" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
-                                    <!-- AI建议的价值观会出现在这里 -->
-                                </div>
+                            <div id="valueInsight" style="display: none; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; margin-bottom: 15px; color: #b0b0b0;">
+                                <!-- 价值观洞察结果 -->
                             </div>
                             
                             <div>
@@ -757,13 +1119,16 @@
                         "You can't connect the dots looking forward; you can only connect them looking backward."
                     </div>
                     
-                    <!-- 游戏地图式可视化 -->
-                    <div id="visualMap" style="background: rgba(255,255,255,0.05); border-radius: 20px; padding: 30px; margin: 20px 0; position: relative; min-height: 400px;">
-                        <canvas id="mapCanvas" style="width: 100%; height: 400px;"></canvas>
-                    </div>
-                    
                     <div id="mapStats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin: 20px 0;">
                         <!-- 统计数据 -->
+                    </div>
+                    
+                    <!-- 简化的时间线视图 -->
+                    <div id="simpleTimeline" style="margin: 30px 0;">
+                        <h4 style="color: #FFD700; margin-bottom: 20px;">📅 决策时间线</h4>
+                        <div id="timelineContainer" style="max-width: 600px; margin: 0 auto;">
+                            <!-- 时间线内容 -->
+                        </div>
                     </div>
                     
                     <div id="decisionHistory" style="margin: 20px 0;">
@@ -778,19 +1143,35 @@
             
             <div id="testInstructions" class="hidden" style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 15px;">
                 <h4 style="margin-bottom: 15px;">🎯 测试方法：</h4>
-                <p style="line-height: 1.6; color: #b0b0b0;">
+                <p style="line-height: 1.6; color: #b0b0b0; margin-bottom: 15px;">
                     1. 点击一个选项，闭上眼睛<br>
                     2. 深呼吸，想象选择这个选项<br>
                     3. 感受你的身体反应 30 秒<br>
                     4. 注意：能量上升 vs 下降？扩张 vs 收缩？<br>
                     5. 测试另一个选项，对比感受
                 </p>
+                
+                <!-- 新增：使用提醒 -->
+                <div style="background: rgba(255,193,7,0.1); padding: 15px; border-radius: 10px; border-left: 4px solid #F59E0B;">
+                    <h5 style="color: #F59E0B; margin-bottom: 10px;">💡 最佳使用条件</h5>
+                    <p style="font-size: 0.9em; color: #b0b0b0; line-height: 1.5;">
+                        • <strong>决策时效</strong>：0-7天内的选择效果最佳<br>
+                        • <strong>心理状态</strong>：心情平静、不急躁时使用<br>
+                        • <strong>环境条件</strong>：安静空间，避免干扰<br>
+                        • <strong>时间安排</strong>：预留15-20分钟完整体验<br>
+                        • <strong>开放心态</strong>：相信身体的智慧，不预设答案
+                    </p>
+                </div>
             </div>
         </div>
     </section>
 
     <div class="inspiration-text">
         "Stay hungry. Stay foolish. Follow your body wisdom." — 重新定义你的人生
+        <br>
+        <small style="opacity: 0.6; font-size: 0.8em; margin-top: 5px; display: block;">
+            ⚖️ 仅供自我探索参考 · 身体智慧在当下最准确 · 长远规划需结合理性分析
+        </small>
     </div>
 
     <script>
@@ -800,6 +1181,8 @@
             optionB: '',
             bodyFeedbackA: '',
             bodyFeedbackB: '',
+            structuredA: {},
+            structuredB: {},
             completed: { A: false, B: false },
             recommendation: '',
             choiceDescription: ''
@@ -813,6 +1196,70 @@
             '家庭', '事业', '金钱', '健康', '关系', '独立',
             '认可', '意义', '平衡', '激情', '责任', '探索'
         ];
+
+        // 身体部位信息
+        const bodyPartInfo = {
+            head: {
+                title: '🧠 头部 - 思维与清晰度中心',
+                description: '头部是我们理性思考和逻辑分析的中心。当面临选择时，注意头部的感受可以帮你了解：',
+                signals: [
+                    '紧绷/压力 → 可能过度思考，需要放松',
+                    '清晰/轻松 → 思路清楚，方向明确',
+                    '发胀/混乱 → 信息过载，需要简化',
+                    '头痛 → 可能与价值观冲突'
+                ]
+            },
+            chest: {
+                title: '💓 胸口 - 情感与心之所向',
+                description: '胸口是情感和直觉的重要中心，特别是心脏区域。这里的感受往往反映你的真实渴望：',
+                signals: [
+                    '温暖/扩张 → 心之所向，正确方向',
+                    '收紧/压抑 → 恐惧或抗拒',
+                    '震动/激动 → 兴奋和期待',
+                    '沉重 → 可能不是最佳选择'
+                ]
+            },
+            belly: {
+                title: '🌀 小腹 - 直觉智慧中心',
+                description: '小腹（丹田）被认为是直觉和本能智慧的中心。这里的感受往往最诚实：',
+                signals: [
+                    '温暖/流动 → 内在确认，好的选择',
+                    '紧绷/收缩 → 警告信号，需要注意',
+                    '震动/活跃 → 直觉被激活',
+                    '空虚/麻木 → 缺乏连接或能量'
+                ]
+            },
+            pelvis: {
+                title: '🔥 骨盆 - 创造力与生命力',
+                description: '骨盆区域连接着我们的创造力、生命力和行动的原始动力：',
+                signals: [
+                    '流动/旋转 → 创造力被激活',
+                    '温暖/充实 → 生命力充沛',
+                    '紧绷/僵硬 → 受阻或恐惧',
+                    '麻木 → 需要重新连接内在力量'
+                ]
+            },
+            arms: {
+                title: '⚡ 手臂 - 行动意愿与表达',
+                description: '手臂代表我们采取行动和表达自己的能力。注意手臂的感受可以了解行动准备度：',
+                signals: [
+                    '轻盈/有力 → 准备好行动',
+                    '沉重/无力 → 缺乏动力或方向',
+                    '发麻/震动 → 兴奋的行动冲动',
+                    '紧张 → 可能有阻力或恐惧'
+                ]
+            },
+            legs: {
+                title: '🚀 腿部 - 前进动力与稳定',
+                description: '腿部是我们前进和保持稳定的基础。腿部的感受反映我们对未来路径的准备：',
+                signals: [
+                    '轻快/有力 → 前进的信号',
+                    '沉重/疲惫 → 需要休息或重新评估',
+                    '震动/不安 → 兴奋或紧张',
+                    '稳定/扎根 → 有安全感和确定性'
+                ]
+            }
+        };
 
         function scrollToMap() {
             document.getElementById('navigation').scrollIntoView({ 
@@ -841,6 +1288,24 @@
             console.log(`激活了 ${zoneType} 区域`);
         }
 
+        function showBodyPartInfo(partType) {
+            const detail = document.getElementById('bodyPartDetail');
+            const info = bodyPartInfo[partType];
+            
+            if (info && detail) {
+                detail.innerHTML = `
+                    <h4 style="color: #007AFF; margin-bottom: 15px;">${info.title}</h4>
+                    <p style="margin-bottom: 15px; line-height: 1.6;">${info.description}</p>
+                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px;">
+                        <h5 style="color: #FFD700; margin-bottom: 10px;">常见信号解读：</h5>
+                        ${info.signals.map(signal => `<p style="margin: 8px 0; color: #b0b0b0;">• ${signal}</p>`).join('')}
+                    </div>
+                `;
+                detail.style.display = 'block';
+                detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
         function startBodyTest() {
             const choiceText = document.getElementById('userChoice').value.trim();
             const optionA = document.getElementById('optionA').value.trim();
@@ -855,8 +1320,10 @@
             testResults.optionA = optionA;
             testResults.optionB = optionB;
             testResults.choiceDescription = choiceText;
+            testResults.structuredA = {};
+            testResults.structuredB = {};
             
-            // 更新测试界面 - 修复这里的错误
+            // 更新测试界面
             const optionAText = document.getElementById('optionAText');
             const optionBText = document.getElementById('optionBText');
             
@@ -896,20 +1363,35 @@
         }
 
         function completeOptionTest(option) {
-            // 保存身体反馈
+            // 获取单选框的值
+            const energyRadio = document.querySelector(`input[name="energy${option}"]:checked`);
+            const bodyRadio = document.querySelector(`input[name="body${option}"]:checked`);
+            const breathRadio = document.querySelector(`input[name="breath${option}"]:checked`);
+            const overallRadio = document.querySelector(`input[name="overall${option}"]:checked`);
+            
+            // 初始化结构化数据对象
+            if (!testResults['structured' + option]) {
+                testResults['structured' + option] = {};
+            }
+            
+            // 保存结构化数据
+            if (energyRadio) testResults['structured' + option].energy = energyRadio.value;
+            if (bodyRadio) testResults['structured' + option].body = bodyRadio.value;
+            if (breathRadio) testResults['structured' + option].breath = breathRadio.value;
+            if (overallRadio) testResults['structured' + option].overall = overallRadio.value;
+            
+            // 保存文本反馈
             const feedbackElement = document.getElementById('bodyFeedback' + option);
-            if (!feedbackElement) {
-                alert('页面元素错误，请刷新重试');
+            if (feedbackElement) {
+                testResults['bodyFeedback' + option] = feedbackElement.value.trim();
+            }
+            
+            // 检查是否至少选择了一些反应
+            if (!energyRadio && !bodyRadio && !breathRadio && !overallRadio && !testResults['bodyFeedback' + option]) {
+                alert('请至少选择一项身体反应');
                 return;
             }
             
-            const feedback = feedbackElement.value.trim();
-            if (!feedback) {
-                alert('请描述你的身体感受');
-                return;
-            }
-            
-            testResults['bodyFeedback' + option] = feedback;
             testResults.completed[option] = true;
             
             // 隐藏当前测试界面
@@ -955,44 +1437,80 @@
         }
 
         function generateAIAnalysis() {
-            const feedbackA = testResults.bodyFeedbackA;
-            const feedbackB = testResults.bodyFeedbackB;
+            const feedbackA = testResults.bodyFeedbackA || '';
+            const feedbackB = testResults.bodyFeedbackB || '';
+            const structuredA = testResults.structuredA || {};
+            const structuredB = testResults.structuredB || {};
             const optionA = testResults.optionA;
             const optionB = testResults.optionB;
             
-            // 简化的AI分析逻辑
+            // 基于结构化数据分析
+            let scoreA = 0;
+            let scoreB = 0;
+            
+            // 计算分数
+            if (structuredA.energy === 'up') scoreA += 2;
+            if (structuredA.body === 'expand') scoreA += 2;
+            if (structuredA.breath === 'smooth') scoreA += 2;
+            if (structuredA.overall === 'light') scoreA += 2;
+            
+            if (structuredB.energy === 'up') scoreB += 2;
+            if (structuredB.body === 'expand') scoreB += 2;
+            if (structuredB.breath === 'smooth') scoreB += 2;
+            if (structuredB.overall === 'light') scoreB += 2;
+            
+            // 分析文本反馈
+            if (feedbackA || feedbackB) {
+                const positiveWords = ['温暖', '放松', '扩张', '轻松', '流动', '兴奋', '清晰', '舒服'];
+                const negativeWords = ['紧张', '收缩', '沉重', '不舒服', '阻塞', '混乱', '压抑'];
+                
+                scoreA += analyzeFeeling(feedbackA, positiveWords, negativeWords);
+                scoreB += analyzeFeeling(feedbackB, positiveWords, negativeWords);
+            }
+            
+            // 生成推荐
             let recommendation = '';
             let valueInsight = '';
-            
-            // 基于关键词分析
-            const positiveWords = ['温暖', '放松', '扩张', '轻松', '流动', '兴奋', '清晰', '舒服'];
-            const negativeWords = ['紧张', '收缩', '沉重', '不舒服', '阻塞', '混乱', '压抑'];
-            
-            const scoreA = analyzeFeeling(feedbackA, positiveWords, negativeWords);
-            const scoreB = analyzeFeeling(feedbackB, positiveWords, negativeWords);
             
             if (scoreA > scoreB) {
                 recommendation = optionA;
                 testResults.recommendation = 'A';
-                valueInsight = "你的身体更认同选项A，这可能反映了你内心深处的价值观和真实渴望。";
+                valueInsight = "你的身体明确倾向选项A，能量上升、身体扩张的信号很清晰。";
             } else if (scoreB > scoreA) {
                 recommendation = optionB;
                 testResults.recommendation = 'B';
-                valueInsight = "你的身体更认同选项B，这表明这个方向更符合你的内在智慧。";
+                valueInsight = "你的身体明确倾向选项B，这个方向让你感到更轻松自在。";
             } else {
                 recommendation = "建议再次深入感受";
                 testResults.recommendation = 'Equal';
-                valueInsight = "两个选项的身体反应相似，可能需要更多时间或更深层的内观。";
+                valueInsight = "两个选项的身体反应相似，可能需要更多时间或从其他角度考虑。";
             }
+            
+            // 生成身体反应对比
+            const reactionCompare = `
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px;">
+                        <h5 style="color: #007AFF; margin-bottom: 10px;">选项A：${optionA}</h5>
+                        <p>能量：${structuredA.energy === 'up' ? '⬆️ 上升' : structuredA.energy === 'down' ? '⬇️ 下降' : '未记录'}</p>
+                        <p>身体：${structuredA.body === 'expand' ? '🟢 扩张' : structuredA.body === 'contract' ? '🔴 收缩' : '未记录'}</p>
+                        <p>呼吸：${structuredA.breath === 'smooth' ? '😌 顺畅' : structuredA.breath === 'blocked' ? '😤 阻塞' : '未记录'}</p>
+                        <p>整体：${structuredA.overall === 'light' ? '✨ 轻盈' : structuredA.overall === 'heavy' ? '🪨 沉重' : '未记录'}</p>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px;">
+                        <h5 style="color: #007AFF; margin-bottom: 10px;">选项B：${optionB}</h5>
+                        <p>能量：${structuredB.energy === 'up' ? '⬆️ 上升' : structuredB.energy === 'down' ? '⬇️ 下降' : '未记录'}</p>
+                        <p>身体：${structuredB.body === 'expand' ? '🟢 扩张' : structuredB.body === 'contract' ? '🔴 收缩' : '未记录'}</p>
+                        <p>呼吸：${structuredB.breath === 'smooth' ? '😌 顺畅' : structuredB.breath === 'blocked' ? '😤 阻塞' : '未记录'}</p>
+                        <p>整体：${structuredB.overall === 'light' ? '✨ 轻盈' : structuredB.overall === 'heavy' ? '🪨 沉重' : '未记录'}</p>
+                    </div>
+                </div>
+            `;
             
             return `
                 <h4 style="color: #007AFF; margin-bottom: 15px;">📊 身体智慧解读</h4>
-                <div style="margin-bottom: 20px;">
-                    <p><strong>选项A反馈：</strong>${feedbackA}</p>
-                    <p><strong>选项B反馈：</strong>${feedbackB}</p>
-                </div>
+                ${reactionCompare}
                 
-                <h4 style="color: #007AFF; margin-bottom: 15px;">💡 价值观洞察</h4>
+                <h4 style="color: #007AFF; margin-bottom: 15px;">💡 洞察</h4>
                 <p style="margin-bottom: 20px;">${valueInsight}</p>
                 
                 <h4 style="color: #007AFF; margin-bottom: 15px;">🎯 直觉推荐</h4>
@@ -1025,21 +1543,214 @@
             const slider = document.getElementById('importanceSlider');
             const valueDisplay = document.getElementById('importanceValue');
             
-            slider.oninput = function() {
-                currentImportance = this.value;
-                valueDisplay.textContent = this.value;
+            if (slider && valueDisplay) {
+                slider.oninput = function() {
+                    currentImportance = this.value;
+                    valueDisplay.textContent = this.value;
+                }
             }
             
             // 生成价值观标签
             const container = document.getElementById('valueTagsContainer');
-            container.innerHTML = '';
+            if (container) {
+                container.innerHTML = '';
+                
+                valueOptions.forEach(value => {
+                    const tag = document.createElement('span');
+                    tag.className = 'value-tag';
+                    tag.textContent = value;
+                    tag.onclick = () => toggleValueTag(tag, value);
+                    container.appendChild(tag);
+                });
+            }
             
-            valueOptions.forEach(value => {
-                const tag = document.createElement('span');
-                tag.className = 'value-tag';
-                tag.textContent = value;
-                tag.onclick = () => toggleValueTag(tag, value);
-                container.appendChild(tag);
+            // 更新推荐选项显示
+            const chosenOption = document.getElementById('chosenOption');
+            if (chosenOption) {
+                const recommendedOption = testResults.recommendation === 'A' ? testResults.optionA : 
+                                        testResults.recommendation === 'B' ? testResults.optionB : '继续探索';
+                chosenOption.textContent = recommendedOption;
+            }
+        }
+
+        function analyzeValueInsight() {
+            const feeling = document.getElementById('feelingInput').value.trim();
+            const why = document.getElementById('whyInput').value.trim();
+            const vision = document.getElementById('visionInput').value.trim();
+            
+            if (!feeling || !why || !vision) {
+                alert('请回答所有问题，这能帮助我们发现你的价值观');
+                return;
+            }
+            
+            // 更智能的价值观分析
+            const allText = (feeling + ' ' + why + ' ' + vision).toLowerCase();
+            const values = [];
+            const detectedValues = {};
+            
+            // 检测价值观关键词
+            const valueKeywords = {
+                '自由': ['自由', '独立', '自主', '选择', '不受约束', '随心', '灵活', '解放'],
+                '安全': ['安全', '稳定', '保障', '可靠', '确定', '安心', '踏实', '安稳'],
+                '成长': ['成长', '进步', '学习', '提升', '发展', '改善', '突破', '完善'],
+                '连接': ['连接', '陪伴', '关系', '友谊', '爱情', '团队', '合作', '分享'],
+                '创造': ['创造', '创新', '发明', '艺术', '设计', '想象', '原创', '表达'],
+                '冒险': ['冒险', '刺激', '挑战', '探索', '新鲜', '未知', '勇敢', '突破'],
+                '家庭': ['家庭', '亲情', '父母', '孩子', '温暖', '归属', '陪伴', '照顾'],
+                '事业': ['事业', '成就', '成功', '工作', '职业', '目标', '影响', '贡献'],
+                '健康': ['健康', '身体', '精神', '平衡', '活力', '运动', '养生', '锻炼'],
+                '金钱': ['金钱', '财富', '经济', '收入', '物质', '富有', '财务', '赚钱'],
+                '认可': ['认可', '赞美', '尊重', '地位', '声誉', '影响', '被看见', '重视'],
+                '意义': ['意义', '价值', '使命', '目的', '贡献', '帮助', '改变', '影响'],
+                '平衡': ['平衡', '和谐', '轻松', '休息', '慢节奏', '简单', '宁静', '从容'],
+                '激情': ['激情', '热爱', '兴奋', '投入', '专注', '痴迷', '燃烧', '狂热']
+            };
+            
+            // 分析每个价值观及其匹配的关键词
+            for (const [value, keywords] of Object.entries(valueKeywords)) {
+                const matchedWords = [];
+                keywords.forEach(keyword => {
+                    if (allText.includes(keyword)) {
+                        matchedWords.push(keyword);
+                    }
+                });
+                
+                if (matchedWords.length > 0) {
+                    values.push(value);
+                    detectedValues[value] = matchedWords;
+                }
+            }
+            
+            // 深度文本分析 - 提取具体表达
+            const personalExpressions = [];
+            
+            // 分析感受词汇
+            const feelingWords = feeling.split(/[,，。、\s]+/).filter(w => w.length > 1);
+            const whyPhrases = why.match(/[^,，。]+/g) || [];
+            const visionElements = vision.match(/[^,，。]+/g) || [];
+            
+            // 情感倾向分析
+            let emotionalProfile = '';
+            const emotionalKeywords = {
+                '积极进取': ['兴奋', '激动', '充满', '活力', '动力', '热情', '期待'],
+                '追求稳定': ['安心', '踏实', '稳定', '安全', '可靠', '保障', '确定'],
+                '注重关系': ['陪伴', '分享', '一起', '连接', '理解', '支持', '爱'],
+                '渴望成长': ['学习', '进步', '提升', '发展', '突破', '改变', '完善'],
+                '寻求自由': ['自由', '独立', '选择', '灵活', '不受', '随心', '自主']
+            };
+            
+            for (const [profile, keywords] of Object.entries(emotionalKeywords)) {
+                const matches = keywords.filter(kw => allText.includes(kw));
+                if (matches.length >= 2) {
+                    emotionalProfile = profile;
+                    break;
+                }
+            }
+            
+            // 生成个性化洞察
+            let personalInsights = [];
+            
+            // 基于具体回答生成洞察
+            if (feeling.length > 0) {
+                personalInsights.push(`💭 从"${feeling}"这个感受中，我感受到你内心的真实渴望`);
+            }
+            
+            if (why.length > 0) {
+                personalInsights.push(`🎯 你提到"${why.substring(0, 30)}${why.length > 30 ? '...' : ''}"，这体现了你深层的价值追求`);
+            }
+            
+            if (vision.length > 0) {
+                personalInsights.push(`✨ 你的愿景"${vision.substring(0, 30)}${vision.length > 30 ? '...' : ''}"展现了你对未来的美好期待`);
+            }
+            
+            // 生成完整的分析结果
+            let analysisText = '';
+            
+            if (values.length > 0) {
+                // 为每个价值观生成解释
+                const valueExplanations = values.map(value => {
+                    const matchedWords = detectedValues[value];
+                    return `<span style="background: #007AFF; color: white; padding: 4px 8px; border-radius: 15px; margin: 2px; display: inline-block; font-size: 0.9em;" title="匹配词汇: ${matchedWords.join('、')}">${value}</span>`;
+                }).join('');
+                
+                analysisText = `
+                    <div style="background: rgba(0,122,255,0.1); padding: 20px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid #007AFF;">
+                        <h5 style="color: #FFD700; margin-bottom: 15px;">🎯 AI深度价值观分析</h5>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <p style="margin-bottom: 8px; font-weight: bold;">🔍 识别出的核心价值观：</p>
+                            <div style="margin-bottom: 15px;">${valueExplanations}</div>
+                        </div>
+                        
+                        ${emotionalProfile ? `
+                        <div style="margin-bottom: 15px;">
+                            <p style="margin-bottom: 8px; font-weight: bold;">💡 你的价值观倾向：</p>
+                            <p style="color: #b0b0b0; background: rgba(255,255,255,0.1); padding: 8px; border-radius: 8px;">${emotionalProfile}</p>
+                        </div>
+                        ` : ''}
+                        
+                        ${personalInsights.length > 0 ? `
+                        <div style="margin-bottom: 15px;">
+                            <p style="margin-bottom: 8px; font-weight: bold;">🎭 个性化洞察：</p>
+                            ${personalInsights.map(insight => `<p style="color: #b0b0b0; margin: 5px 0; font-size: 0.9em;">${insight}</p>`).join('')}
+                        </div>
+                        ` : ''}
+                        
+                        <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; margin-top: 15px;">
+                            <p style="color: #888; font-size: 0.8em;">💎 这些价值观将自动添加到下方选择区域，你可以继续添加或调整</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // 即使没有直接匹配，也要提供有价值的分析
+                analysisText = `
+                    <div style="background: rgba(255,193,7,0.1); padding: 20px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid #FFD700;">
+                        <h5 style="color: #FFD700; margin-bottom: 15px;">🌟 独特价值观发现</h5>
+                        
+                        ${personalInsights.length > 0 ? `
+                        <div style="margin-bottom: 15px;">
+                            <p style="margin-bottom: 8px; font-weight: bold;">🎭 从你的回答中，我发现：</p>
+                            ${personalInsights.map(insight => `<p style="color: #b0b0b0; margin: 8px 0; font-size: 0.9em;">${insight}</p>`).join('')}
+                        </div>
+                        ` : ''}
+                        
+                        <div style="margin-bottom: 15px;">
+                            <p style="margin-bottom: 8px; font-weight: bold;">💡 这说明你的价值观：</p>
+                            <p style="color: #b0b0b0;">• 非常个性化和独特</p>
+                            <p style="color: #b0b0b0;">• 可能超越了传统分类</p>
+                            <p style="color: #b0b0b0;">• 值得进一步探索和定义</p>
+                        </div>
+                        
+                        <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px;">
+                            <p style="color: #888; font-size: 0.9em;">🎨 请在下方选择最接近的价值观，或自定义你独特的价值观表达</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 显示分析结果
+            const insight = document.getElementById('valueInsight');
+            if (insight) {
+                insight.style.display = 'block';
+                insight.innerHTML = analysisText;
+                
+                // 自动选择相关的价值观标签
+                values.forEach(value => {
+                    const tag = Array.from(document.querySelectorAll('.value-tag')).find(t => t.textContent === value);
+                    if (tag && !selectedValues.includes(value)) {
+                        toggleValueTag(tag, value);
+                    }
+                });
+                
+                // 滚动到结果区域
+                insight.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+            
+            console.log('价值观分析完成:', {
+                detectedValues: values,
+                emotionalProfile,
+                personalInsights,
+                matchDetails: detectedValues
             });
         }
 
@@ -1053,61 +1764,84 @@
             }
         }
 
+        function addCustomValue() {
+            const input = document.getElementById('customValueInput');
+            const value = input.value.trim();
+            
+            if (value && !selectedValues.includes(value)) {
+                // 创建新标签
+                const container = document.getElementById('valueTagsContainer');
+                const tag = document.createElement('span');
+                tag.className = 'value-tag selected';
+                tag.textContent = value;
+                tag.onclick = () => toggleValueTag(tag, value);
+                container.appendChild(tag);
+                
+                // 添加到已选择列表
+                selectedValues.push(value);
+                input.value = '';
+            }
+        }
+
         function saveToLifeMap() {
-            try {
-                if (selectedValues.length === 0) {
-                    alert('Please select at least one value tag');
-                    return;
+            if (selectedValues.length === 0) {
+                alert('请至少选择一个价值观标签');
+                return;
+            }
+            
+            // 获取三个问题的答案
+            const feeling = document.getElementById('feelingInput').value || '';
+            const why = document.getElementById('whyInput').value || '';
+            const vision = document.getElementById('visionInput').value || '';
+            
+            const decision = {
+                id: Date.now(),
+                date: new Date().toISOString(),
+                description: testResults.choiceDescription,
+                optionA: testResults.optionA,
+                optionB: testResults.optionB,
+                bodyFeedbackA: testResults.bodyFeedbackA,
+                bodyFeedbackB: testResults.bodyFeedbackB,
+                structuredA: testResults.structuredA,
+                structuredB: testResults.structuredB,
+                recommendation: testResults.recommendation,
+                importance: currentImportance,
+                values: [...selectedValues],
+                valueExploration: {
+                    feeling: feeling,
+                    why: why,
+                    vision: vision
                 }
-                
-                // 获取三个问题的答案
-                const feeling = document.getElementById('feelingInput').value || '';
-                const why = document.getElementById('whyInput').value || '';
-                const vision = document.getElementById('visionInput').value || '';
-                
-                const decision = {
-                    id: Date.now(),
-                    date: new Date().toISOString(),
-                    description: testResults.choiceDescription,
-                    optionA: testResults.optionA,
-                    optionB: testResults.optionB,
-                    bodyFeedbackA: testResults.bodyFeedbackA,
-                    bodyFeedbackB: testResults.bodyFeedbackB,
-                    recommendation: testResults.recommendation,
-                    importance: currentImportance,
-                    values: [...selectedValues],
-                    // 新增：保存三个问题的答案
-                    valueExploration: {
-                        feeling: feeling,
-                        why: why,
-                        vision: vision
-                    }
-                };
-                
-                // 保存到localStorage
-                let lifeMap = JSON.parse(localStorage.getItem('lifeMap') || '[]');
-                lifeMap.push(decision);
-                localStorage.setItem('lifeMap', JSON.stringify(lifeMap));
-                
-                alert('✅ Successfully saved to your Life Map!');
-                
-                // 重置保存表单
-                selectedValues = [];
-                currentImportance = 5;
-                document.getElementById('importanceSlider').value = 5;
-                document.getElementById('importanceValue').textContent = '5';
-                document.querySelectorAll('.value-tag').forEach(tag => tag.classList.remove('selected'));
-                
-                // 显示查看按钮更明显
-                document.querySelector('button[onclick="showLifeMap()"]').style.animation = 'pulse 1s ease-in-out 3';
-            } catch (error) {
-                console.error('Save error:', error);
-                alert('Error saving. Please try again.');
+            };
+            
+            // 使用内存存储替代localStorage
+            if (!window.lifeMapData) {
+                window.lifeMapData = [];
+            }
+            window.lifeMapData.push(decision);
+            
+            alert('✅ Successfully saved to your Life Map!');
+            
+            // 重置保存表单
+            selectedValues = [];
+            currentImportance = 5;
+            const slider = document.getElementById('importanceSlider');
+            const valueDisplay = document.getElementById('importanceValue');
+            if (slider && valueDisplay) {
+                slider.value = 5;
+                valueDisplay.textContent = '5';
+            }
+            document.querySelectorAll('.value-tag').forEach(tag => tag.classList.remove('selected'));
+            
+            // 显示查看按钮更明显
+            const mapButton = document.querySelector('button[onclick="showLifeMap()"]');
+            if (mapButton) {
+                mapButton.style.animation = 'pulse 1s ease-in-out 3';
             }
         }
 
         function showLifeMap() {
-            const lifeMap = JSON.parse(localStorage.getItem('lifeMap') || '[]');
+            const lifeMap = window.lifeMapData || [];
             
             // 隐藏其他界面
             document.getElementById('aiAnalysis').classList.add('hidden');
@@ -1116,115 +1850,50 @@
             const stats = generateMapStats(lifeMap);
             document.getElementById('mapStats').innerHTML = stats;
             
+            // 生成简单的时间线
+            const timeline = generateSimpleTimeline(lifeMap);
+            document.getElementById('timelineContainer').innerHTML = timeline;
+            
             // 生成历史决策
             const history = generateDecisionHistory(lifeMap);
             document.getElementById('decisionHistory').innerHTML = history;
-            
-            // 绘制游戏地图
-            drawLifeMap(lifeMap);
             
             // 显示地图界面
             document.getElementById('lifeMapView').classList.remove('hidden');
             document.getElementById('lifeMapView').scrollIntoView({ behavior: 'smooth' });
         }
-
-        function drawLifeMap(decisions) {
-            const canvas = document.getElementById('mapCanvas');
-            if (!canvas) return;
-            
-            // 设置画布大小
-            canvas.width = canvas.offsetWidth;
-            canvas.height = 400;
-            
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
+        
+        function generateSimpleTimeline(decisions) {
             if (decisions.length === 0) {
-                ctx.fillStyle = '#888';
-                ctx.font = '16px Arial';
-                ctx.textAlign = 'center';
-                ctx.fillText('你的旅程即将开始...', canvas.width / 2, canvas.height / 2);
-                return;
+                return '<p style="color: #888;">还没有决策记录，开始你的第一个选择吧！</p>';
             }
             
-            // 绘制路径
-            const nodeRadius = 20;
-            const padding = 40;
-            const stepX = (canvas.width - padding * 2) / Math.max(decisions.length - 1, 1);
+            // 按时间排序
+            const sorted = [...decisions].sort((a, b) => new Date(a.date) - new Date(b.date));
             
-            // 绘制连接线
-            ctx.strokeStyle = '#007AFF';
-            ctx.lineWidth = 2;
-            ctx.setLineDash([5, 5]);
-            ctx.beginPath();
-            
-            decisions.forEach((decision, index) => {
-                const x = padding + index * stepX;
-                const y = canvas.height / 2 + Math.sin(index * 0.5) * 50; // 波浪形路径
+            return sorted.map((decision, index) => {
+                const date = new Date(decision.date).toLocaleDateString('zh-CN');
+                const chosen = decision.recommendation === 'A' ? decision.optionA : 
+                              decision.recommendation === 'B' ? decision.optionB : '继续探索';
+                const icon = decision.importance >= 8 ? '⭐' : 
+                            decision.importance >= 5 ? '💫' : '✨';
                 
-                if (index === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
-            });
-            ctx.stroke();
-            ctx.setLineDash([]);
-            
-            // 绘制节点
-            decisions.forEach((decision, index) => {
-                const x = padding + index * stepX;
-                const y = canvas.height / 2 + Math.sin(index * 0.5) * 50;
-                
-                // 根据重要性决定节点大小
-                const size = nodeRadius + (decision.importance / 10) * 15;
-                
-                // 绘制光晕效果
-                const gradient = ctx.createRadialGradient(x, y, 0, x, y, size);
-                gradient.addColorStop(0, 'rgba(0, 122, 255, 0.8)');
-                gradient.addColorStop(1, 'rgba(0, 122, 255, 0.1)');
-                
-                ctx.fillStyle = gradient;
-                ctx.beginPath();
-                ctx.arc(x, y, size + 10, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // 绘制节点
-                ctx.fillStyle = '#007AFF';
-                ctx.beginPath();
-                ctx.arc(x, y, size, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // 绘制日期
-                ctx.fillStyle = '#fff';
-                ctx.font = '10px Arial';
-                ctx.textAlign = 'center';
-                const date = new Date(decision.date).toLocaleDateString('zh-CN', { month: 'numeric', day: 'numeric' });
-                ctx.fillText(date, x, y + 5);
-                
-                // 绘制价值观标签
-                if (decision.values && decision.values.length > 0) {
-                    ctx.fillStyle = '#FFD700';
-                    ctx.font = '12px Arial';
-                    ctx.fillText(decision.values[0], x, y + size + 20);
-                }
-            });
-            
-            // 绘制当前位置指示器
-            const lastIndex = decisions.length - 1;
-            const lastX = padding + lastIndex * stepX;
-            const lastY = canvas.height / 2 + Math.sin(lastIndex * 0.5) * 50;
-            
-            ctx.strokeStyle = '#FFD700';
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            ctx.arc(lastX, lastY, 30, 0, Math.PI * 2);
-            ctx.stroke();
-            
-            // 添加"You are here"标签
-            ctx.fillStyle = '#FFD700';
-            ctx.font = 'bold 14px Arial';
-            ctx.fillText('You are here', lastX, lastY - 40);
+                return `
+                    <div style="display: flex; align-items: center; margin: 15px 0; opacity: ${1 - index * 0.1};">
+                        <div style="flex: 0 0 100px; text-align: right; color: #888; font-size: 0.9em;">${date}</div>
+                        <div style="flex: 0 0 40px; text-align: center;">
+                            <div style="width: 12px; height: 12px; background: #007AFF; border-radius: 50%; margin: 0 auto;"></div>
+                            ${index < sorted.length - 1 ? '<div style="width: 2px; height: 30px; background: #007AFF; opacity: 0.3; margin: 0 auto;"></div>' : ''}
+                        </div>
+                        <div style="flex: 1; padding-left: 20px;">
+                            <div style="font-size: 1.1em;">${icon} ${chosen}</div>
+                            <div style="font-size: 0.8em; color: #888; margin-top: 5px;">
+                                ${decision.values ? decision.values.join(' · ') : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
         function generateMapStats(lifeMap) {
@@ -1254,7 +1923,7 @@
                 return '<p style="text-align: center; color: #888;">还没有保存任何决策，开始你的第一次记录吧！</p>';
             }
             
-            return lifeMap.reverse().map(decision => {
+            return lifeMap.slice().reverse().map(decision => {
                 const date = new Date(decision.date).toLocaleDateString('zh-CN');
                 const recommendedOption = decision.recommendation === 'A' ? decision.optionA : 
                                         decision.recommendation === 'B' ? decision.optionB : '继续思考';
@@ -1284,6 +1953,8 @@
                 optionB: '',
                 bodyFeedbackA: '',
                 bodyFeedbackB: '',
+                structuredA: {},
+                structuredB: {},
                 completed: { A: false, B: false },
                 recommendation: '',
                 choiceDescription: ''
@@ -1296,8 +1967,22 @@
             document.getElementById('userChoice').value = '';
             document.getElementById('optionA').value = '';
             document.getElementById('optionB').value = '';
-            document.getElementById('bodyFeedbackA').value = '';
-            document.getElementById('bodyFeedbackB').value = '';
+            
+            const feedbackA = document.getElementById('bodyFeedbackA');
+            const feedbackB = document.getElementById('bodyFeedbackB');
+            if (feedbackA) feedbackA.value = '';
+            if (feedbackB) feedbackB.value = '';
+            
+            // 清空价值观探索
+            const feelingInput = document.getElementById('feelingInput');
+            const whyInput = document.getElementById('whyInput');
+            const visionInput = document.getElementById('visionInput');
+            if (feelingInput) feelingInput.value = '';
+            if (whyInput) whyInput.value = '';
+            if (visionInput) visionInput.value = '';
+            
+            // 重置单选框
+            document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
             
             // 隐藏所有测试界面
             document.getElementById('testOptions').classList.add('hidden');
@@ -1307,6 +1992,10 @@
             document.getElementById('aiAnalysis').classList.add('hidden');
             document.getElementById('lifeMapView').classList.add('hidden');
             
+            // 隐藏价值观洞察
+            const valueInsight = document.getElementById('valueInsight');
+            if (valueInsight) valueInsight.style.display = 'none';
+            
             // 滚动到输入区域
             document.getElementById('testing').scrollIntoView({ behavior: 'smooth' });
         }
@@ -1315,13 +2004,15 @@
         document.addEventListener('DOMContentLoaded', function() {
             // 创建更多飘浮点
             const container = document.querySelector('.floating-elements');
-            for (let i = 0; i < 10; i++) {
-                const dot = document.createElement('div');
-                dot.className = 'floating-dot';
-                dot.style.top = Math.random() * 100 + '%';
-                dot.style.left = Math.random() * 100 + '%';
-                dot.style.animationDelay = Math.random() * 6 + 's';
-                container.appendChild(dot);
+            if (container) {
+                for (let i = 0; i < 10; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'floating-dot';
+                    dot.style.top = Math.random() * 100 + '%';
+                    dot.style.left = Math.random() * 100 + '%';
+                    dot.style.animationDelay = Math.random() * 6 + 's';
+                    container.appendChild(dot);
+                }
             }
         });
     </script>
